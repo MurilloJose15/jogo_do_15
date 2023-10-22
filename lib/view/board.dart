@@ -9,6 +9,8 @@ class board extends StatefulWidget {
 class _boardState extends State<board> {
   var number = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
+  int nMoves = 0;
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +30,16 @@ class _boardState extends State<board> {
                 fontWeight: FontWeight.bold,
                 fontSize: 50),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              nMoves.toString() + 'Moves | 15 Tiles',
+              style: TextStyle(
+                color: Colors.deepPurpleAccent,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           SizedBox(height: 5),
           Center(child: grid(number, onClick))
         ],
@@ -43,7 +55,26 @@ class _boardState extends State<board> {
       setState(() {
         number[number.indexOf(0)] = number[index];
         number[index] = 0;
+        nMoves++;
       });
+    }
+    checkWinner();
+  }
+
+  bool isShorted(List numberList){
+    int first=numberList.first;
+    for(int i=1; i<numberList.length; i++){
+      int nextNumber = numberList[i];
+      if(first > nextNumber) return false;
+      first = numberList[i];
+    }
+    return true;
+  }
+
+  void checkWinner(){
+    bool isWinner = isShorted(number);
+    if(isWinner) {
+      print('Venceu!');
     }
   }
 }
